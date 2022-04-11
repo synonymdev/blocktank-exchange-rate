@@ -1,0 +1,15 @@
+{
+  "name": "exchange-rate",
+  "version": "1.0.0",
+  "description": "Get exchange rate for btc usd",
+  "main": "./src/exchange-api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.1",
+    "bignumber.js": "^9.0.2"
+  }
+}
