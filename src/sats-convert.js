@@ -8,5 +8,6 @@ module.exports = {
   },
   toBtc: (amt) => {
     return new BigNumber(amt).abs().div(100000000).dp(8, BigNumber.ROUND_FLOOR).toString()
-  }
+  },
+  SATOSHI: 100000000
 }

@@ -1,5 +1,5 @@
 {
-  "name": "exchange-rate",
+  "name": "synonym-exchange-rate",
   "version": "1.0.0",
   "description": "Get exchange rate for btc usd",
   "main": "./src/exchange-api.js",

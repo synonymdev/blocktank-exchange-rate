@@ -1,7 +1,7 @@
 'use strict'
 const { default: axios } = require('axios')
-const { toBtc } = require('./sats-convert')
 const { default: BigNumber } = require('bignumber.js')
+const { toBtc,SATOSHI } = require('./sats-convert')
 
 async function callAPI (ticker) {
   try {
@@ -17,7 +17,7 @@ async function callAPI (ticker) {
 async function getRate (ticker) {
   const data = await callAPI(ticker)
   let res
-  if(data.data && data.data[0]){
+  if (data.data && data.data[0]) {
     res = data.data[0]
   }
   return {
@@ -31,6 +31,17 @@ const ExchangeRate = {
     const btcUSD = await ExchangeRate.getBtcUsd()
     const btc = toBtc(sats)
     return BigNumber(btc).times(btcUSD.price).toNumber()
+  },
+
+  usdToBtc: async (dollar) => {
+    if (dollar === 0) return 0
+    const btcUSD = await ExchangeRate.getBtcUsd()
+    return BigNumber(dollar).dividedBy(btcUSD.price).dp(8, BigNumber.ROUND_FLOOR).toString()
+  },
+
+  usdToSats: async (dollar) => {
+    const toBtc = await ExchangeRate.usdToBtc(dollar)
+    return BigNumber(toBtc).times(SATOSHI).toString()
   },
 
   getBtcUsd: () => {
