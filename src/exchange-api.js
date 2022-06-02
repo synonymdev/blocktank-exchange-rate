@@ -16,7 +16,7 @@ async function callTicker (ticker) {
 async function callCandles (ticker) {
   try {
     const res = await axios.get('https://api-pub.bitfinex.com/v2/candles/trade' + ticker)
-    return res
+    return res.data
   } catch (err) {
     console.log('Failed to get FRR')
     console.log(err)
@@ -64,8 +64,11 @@ const ExchangeRate = {
     return res.data
   },
 
-  historicalBtcUsd: (date) =>{
-    return callCandles(`:1D:tBTCUSD/last?start=${date}`)
+  historicalBtcUsd: async (date) =>{
+    const res = await callCandles(`:1D:tBTCUSD/last?start=${date}`)
+    return {
+      price: res? res[2] : null
+    }
   }
 }
 module.exports = ExchangeRate
