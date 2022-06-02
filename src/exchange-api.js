@@ -3,7 +3,7 @@ const { default: axios } = require('axios')
 const { default: BigNumber } = require('bignumber.js')
 const { toBtc,SATOSHI } = require('./sats-convert')
 
-async function callAPI (ticker) {
+async function callTicker (ticker) {
   try {
     const res = await axios.get('https://api-pub.bitfinex.com/v2/tickers?symbols=' + ticker)
     return res
@@ -13,9 +13,20 @@ async function callAPI (ticker) {
     return null
   }
 }
+async function callCandles (ticker) {
+  try {
+    const res = await axios.get('https://api-pub.bitfinex.com/v2/candles/trade' + ticker)
+    return res
+  } catch (err) {
+    console.log('Failed to get FRR')
+    console.log(err)
+    return null
+  }
+}
+
 
 async function getRate (ticker) {
-  const data = await callAPI(ticker)
+  const data = await callTicker(ticker)
   let res
   if (data.data && data.data[0]) {
     res = data.data[0]
@@ -49,8 +60,12 @@ const ExchangeRate = {
   },
 
   async getRatesRaw (tickers) {
-    const res = await callAPI(tickers)
+    const res = await callTicker(tickers)
     return res.data
+  },
+
+  historicalBtcUsd: (date) =>{
+    return callCandles(`:1D:tBTCUSD/last?start=${date}`)
   }
 }
 module.exports = ExchangeRate
